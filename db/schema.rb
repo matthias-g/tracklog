@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20130310162618) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "logs", force: :cascade do |t|
     t.string   "name"
     t.text     "comment"
@@ -26,7 +29,7 @@ ActiveRecord::Schema.define(version: 20130310162618) do
     t.integer "tag_id", null: false
   end
 
-  add_index "logs_tags", ["log_id", "tag_id"], name: "index_logs_tags_on_log_id_and_tag_id", unique: true
+  add_index "logs_tags", ["log_id", "tag_id"], name: "index_logs_tags_on_log_id_and_tag_id", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
@@ -34,7 +37,7 @@ ActiveRecord::Schema.define(version: 20130310162618) do
     t.datetime "updated_at"
   end
 
-  add_index "tags", ["name"], name: "index_tags_on_name"
+  add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
 
   create_table "trackpoints", force: :cascade do |t|
     t.integer  "track_id"
@@ -44,7 +47,7 @@ ActiveRecord::Schema.define(version: 20130310162618) do
     t.datetime "time",      null: false
   end
 
-  add_index "trackpoints", ["track_id"], name: "index_trackpoints_on_track_id"
+  add_index "trackpoints", ["track_id"], name: "index_trackpoints_on_track_id", using: :btree
 
   create_table "tracks", force: :cascade do |t|
     t.integer  "log_id"
@@ -66,7 +69,7 @@ ActiveRecord::Schema.define(version: 20130310162618) do
     t.string   "name"
   end
 
-  add_index "tracks", ["log_id"], name: "index_tracks_on_log_id"
+  add_index "tracks", ["log_id"], name: "index_tracks_on_log_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
@@ -79,6 +82,6 @@ ActiveRecord::Schema.define(version: 20130310162618) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["username"], name: "index_users_on_username"
+  add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
 end
