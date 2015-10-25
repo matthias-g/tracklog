@@ -18,6 +18,7 @@ class TracksController < ApplicationController
               :latitude  => trackpoint.latitude,
               :longitude => trackpoint.longitude,
               :elevation => trackpoint.elevation,
+              :speed     => trackpoint.speed,
               :timestamp => trackpoint.time.to_i,
               :time      => trackpoint.time.strftime("%d.%m.%Y %H:%M")
             }

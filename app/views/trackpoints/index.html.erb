@@ -28,7 +28,9 @@
         <%- end -%>
       </td>
       <td class="r">
-        <%- if @trackpoints[i + 1] -%>
+        <%- if trackpoint.speed %>
+          <%=format_speed trackpoint.speed %>
+        <%- elsif @trackpoints[i + 1] -%>
           <%=format_speed trackpoint.speed_to_trackpoint(@trackpoints[i + 1]) %>
         <%- else -%>
           –

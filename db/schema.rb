@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130310162618) do
+ActiveRecord::Schema.define(version: 20151024210249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20130310162618) do
     t.float    "longitude", null: false
     t.float    "elevation"
     t.datetime "time",      null: false
+    t.float    "speed"
   end
 
   add_index "trackpoints", ["track_id"], name: "index_trackpoints_on_track_id", using: :btree

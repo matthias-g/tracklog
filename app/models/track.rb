@@ -68,18 +68,19 @@ class Track < ActiveRecord::Base
     self.distance     = 0
     self.ascent       = 0
     self.descent      = 0
-    self.max_speed    = 0
     self.moving_time  = 0
     self.stopped_time = 0
+    self.max_speed    = trackpoints.first.speed
 
     0.upto(self.trackpoints.size - 2) do |i|
       tp1 = self.trackpoints[i]
       tp2 = self.trackpoints[i + 1]
 
       self.distance += tp1.distance_to_trackpoint(tp2)
-      speed          = tp1.speed_to_trackpoint(tp2)
       ascent         = tp1.ascent_to_trackpoint(tp2)
       time           = tp1.time_to_trackpoint(tp2)
+      speed          = tp2.speed
+      speed          = tp1.speed_to_trackpoint(tp2) if speed == nil
       self.max_speed = speed if speed > self.max_speed
 
       if ascent
