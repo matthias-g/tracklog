@@ -10,7 +10,6 @@ gem "jquery-rails"
 gem "less-rails"
 gem "therubyracer"
 
-gem "sqlite3"
 gem "pg"
 
 group :development do
