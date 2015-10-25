@@ -2,7 +2,8 @@
 
 class TracksController < ApplicationController
   before_filter :authenticate
-  before_filter :find_track_and_check_permission, except: [:create]
+  before_filter :find_track_and_check_read_permission, only: [:show]
+  before_filter :find_track_and_check_write_permission, only: [:update, :split, :transfer, :destroy]
 
   def show
     @trackpoints = @track.trackpoints
@@ -147,22 +148,34 @@ class TracksController < ApplicationController
     end
   end
 
-  def find_track_and_check_permission
-    @track = Track \
-      .preload(:log)
-      .where(:log_id => params[:log_id])
-      .where(:id => params[:id])
-      .first!
+  private
 
-    unless @track.log.user_id == current_user.id
+  def find_track
+    Track.preload(:log)
+        .where(:log_id => params[:log_id])
+        .where(:id => params[:id])
+        .first!
+  end
+
+  def find_track_and_check_read_permission
+    @track = find_track
+
+    unless @track.log.user_id == current_user.id || @track.log.shared
       flash[:error] = "You don’t have permission to view this track."
       redirect_to dashboard_path and return
     end
   end
-  private :find_track_and_check_permission
+
+  def find_track_and_check_write_permission
+    @track = find_track
+
+    unless @track.log.user_id == current_user.id
+      flash[:error] = "You don’t have permission to edit this track."
+      redirect_to dashboard_path and return
+    end
+  end
 
   def track_params
     params.require(:track).permit(:name)
   end
-  private :track_params
 end

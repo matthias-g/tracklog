@@ -29,6 +29,14 @@
           <%= f.text_area :comment %>
         </div>
       </div>
+      <div class="row">
+        <div class="label">
+          <label for="log_shared">Shared</label>
+        </div>
+        <div class="field">
+          <%= f.check_box :shared %>
+        </div>
+      </div>
       <div class="row button">
         <%= submit_tag "Update Log" %>
       </div>

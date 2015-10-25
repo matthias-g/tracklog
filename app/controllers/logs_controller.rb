@@ -2,7 +2,8 @@
 
 class LogsController < ApplicationController
   before_filter :authenticate
-  before_filter :find_log_and_check_permission, :except => [:index, :tagged, :new, :create]
+  before_filter :find_log_and_check_read_permission, only: [:show, :tracks]
+  before_filter :find_log_and_check_write_permission, only: [:edit, :update, :destroy]
 
   def index
     @selected_year = params[:year] ? params[:year].to_i : Time.now.year
@@ -15,7 +16,7 @@ class LogsController < ApplicationController
       .uniq
 
     @logs = current_user
-      .logs
+      .visible_logs
       .select("logs.*, tracks.start_time")
       .joins(:tracks)
       .where("tracks.start_time >= ?", Time.mktime(@selected_year, 1, 1))
@@ -28,7 +29,7 @@ class LogsController < ApplicationController
   end
 
   def tagged
-    @logs = current_user.logs
+    @logs = current_user.visible_logs
       .select("logs.*, tracks.start_time")
       .joins(:tracks)
       .joins(:tags)
@@ -130,15 +131,25 @@ class LogsController < ApplicationController
     redirect_to @log
   end
 
-  def find_log_and_check_permission
+  private
+
+  def find_log_and_check_read_permission
     @log = Log.find(params[:id])
 
-    unless @log.user_id == current_user.id
+    unless @log.user_id == current_user.id || @log.shared
       flash[:error] = "You don’t have permission to view this log."
       redirect_to dashboard_path and return
     end
   end
-  private :find_log_and_check_permission
+
+  def find_log_and_check_write_permission
+    @log = Log.find(params[:id])
+
+    unless @log.user_id == current_user.id
+      flash[:error] = "You don’t have permission to edit this log."
+      redirect_to dashboard_path and return
+    end
+  end
 
   def calculate_list
     @total_distance = 0.0
@@ -162,10 +173,8 @@ class LogsController < ApplicationController
       @logs_by_months[time][:total_duration] += log.duration
     end
   end
-  private :calculate_list
 
   def log_params
-    params.require(:log).permit(:name, :comment, :tags_list, :track_file)
+    params.require(:log).permit(:name, :comment, :tags_list, :track_file, :shared)
   end
-  private :log_params
 end

@@ -112,15 +112,17 @@
     </div>
   <%- end -%>
 
-  <h3>Actions</h3>
+  <%- if @log.user_id == current_user.id -%>
+    <h3>Actions</h3>
 
-  <div id="track-actions" class="box">
-    <ul>
-      <li><%= link_to "Edit Tags", nil, id: "log-tags-link" %>
-      <li><%= link_to "Edit Log", edit_log_path(@log) %>
-      <li><%= link_to "Delete Log", log_path(@log), :method => :delete, :confirm => "Do you really want to delete this log and its tracks?" %>
-    </ul>
-  </div>
+    <div id="track-actions" class="box">
+      <ul>
+        <li><%= link_to "Edit Tags", nil, id: "log-tags-link" %>
+        <li><%= link_to "Edit Log", edit_log_path(@log) %>
+        <li><%= link_to "Delete Log", log_path(@log), :method => :delete, :confirm => "Do you really want to delete this log and its tracks?" %>
+      </ul>
+    </div>
+  <%- end -%>
 </div>
 
 <div id="track-main">
