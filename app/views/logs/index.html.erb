@@ -1,9 +1,11 @@
 <%- title "Logs for #{@selected_year}" -%>
 
 <div class="site">
-  <div id="logs-add-log-button">
-    <%= link_to "Add a Log", new_log_path, :class => "button big" %>
-  </div>
+  <%- unless current_user.is_restricted? -%>
+    <div id="logs-add-log-button">
+      <%= link_to "Add a Log", new_log_path, :class => "button big" %>
+    </div>
+  <%- end -%>
 
   <h1>Logs</h1>
 

@@ -56,6 +56,14 @@
         <label><%= f.check_box :is_admin %></label>
       </div>
     </div>
+    <div class="row">
+      <div class="label">
+        Restricted to read access
+      </div>
+      <div class="field controls">
+        <label><%= f.check_box :is_restricted %></label>
+      </div>
+    </div>
     <div class="row submit">
       <%= submit_tag "Create User" %>
     </div>

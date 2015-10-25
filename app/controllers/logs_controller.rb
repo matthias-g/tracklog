@@ -4,6 +4,7 @@ class LogsController < ApplicationController
   before_filter :authenticate
   before_filter :find_log_and_check_read_permission, only: [:show, :tracks]
   before_filter :find_log_and_check_write_permission, only: [:edit, :update, :destroy]
+  before_filter :redirect_restricted_users, only: [:new, :create]
 
   def index
     @selected_year = params[:year] ? params[:year].to_i : Time.now.year
@@ -176,5 +177,9 @@ class LogsController < ApplicationController
 
   def log_params
     params.require(:log).permit(:name, :comment, :tags_list, :track_file, :shared)
+  end
+
+  def redirect_restricted_users
+    redirect_to dashboard_path if current_user.is_restricted?
   end
 end

@@ -18,7 +18,9 @@
         <ul>
           <li><%= link_to "Dashboard", dashboard_path %>
           <li><%= link_to "Logs", logs_path %>
-          <li><%= link_to "My Profile", profile_path %>
+          <%- unless current_user.is_restricted? -%>
+            <li><%= link_to "My Profile", profile_path %>
+          <%- end -%>
           <%- if current_user.is_admin? -%>
             <li><%= link_to "Admin", admin_path %>
           <%- end -%>

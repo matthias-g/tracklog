@@ -2,6 +2,7 @@
 
 class ProfileController < ApplicationController
   before_filter :authenticate
+  before_filter :redirect_restricted_users
 
   def index
     @user = current_user
@@ -37,8 +38,13 @@ class ProfileController < ApplicationController
     end
   end
 
+  private
+
   def user_params
     params.require(:user).permit(:username, :name, :distance_units)
   end
-  private :user_params
+
+  def redirect_restricted_users
+    redirect_to dashboard_path if current_user.is_restricted?
+  end
 end
