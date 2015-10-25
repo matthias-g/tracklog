@@ -9,6 +9,7 @@ gem 'unicode_utils'
 gem 'jquery-rails'
 gem 'less-rails'
 gem 'therubyracer'
+gem 'uglifier'
 
 gem 'pg'
 gem 'unicorn'
