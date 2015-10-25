@@ -75,6 +75,79 @@ class Log < ActiveRecord::Base
   def create_tracks_from_gpx(gpx)
     doc = Nokogiri::XML.parse(gpx)
     new_tracks = []
+    ns = "http://www.topografix.com/GPX/1/0"
+    nodes = doc.xpath("/g:gpx", "g" => ns)
+    version = (nodes.size == 1) ? nodes.first["version"] : nil
+
+    if version == "1.0"
+      new_tracks = parse_gpx_1_0(doc)
+    elsif version == "1.1"
+      new_tracks = parse_gpx_1_1(doc)
+    end
+
+    new_tracks.each { |track| track.save }
+    new_tracks
+  end
+
+  def parse_gpx_1_0(doc)
+    new_tracks = []
+    ns = "http://www.topografix.com/GPX/1/0"
+
+    doc.xpath("/g:gpx/g:rte", "g" => ns).each do |rte|
+      tracks = []
+
+      nodes = rte.xpath("./g:name", "g" => ns)
+      track_name = (nodes.size == 1) ? nodes.first.text : nil
+
+      track = self.tracks.new
+
+      rtept_nodes = rte.xpath("./g:rtept", "g" => ns)
+      rtept_nodes.each do |rtept|
+        # Elevation
+        nodes = rtept.xpath("./g:ele", "g" => ns)
+        elevation = (nodes.size == 1) ? nodes.first.text.to_f : nil
+
+        # Time
+        nodes = rtept.xpath("./g:time", "g" => ns)
+        time = (nodes.size == 1) ? Time.parse(nodes.first.text) : nil
+
+        # Speed
+        nodes = rtept.xpath("./g:speed", "g" => ns)
+        speed = (nodes.size == 1) ? nodes.first.text.to_f.kilometer_per_hour : nil
+
+        if time and rtept["lat"] and rtept["lon"]
+          track.trackpoints.new \
+            :latitude  => rtept["lat"],
+            :longitude => rtept["lon"],
+            :elevation => elevation,
+            :time      => time,
+            :speed     => speed
+        end
+
+      end
+
+      if track.trackpoints.size > 2
+        track.update_cached_information
+        tracks << track
+      end
+
+      if track_name
+        if tracks.size == 1
+          tracks.first.name = track_name
+        else
+          tracks.each_with_index do |track, i|
+            track.name = "#{track_name} ##{i + 1}"
+          end
+        end
+      end
+
+      new_tracks += tracks
+    end
+    new_tracks
+  end
+
+  def parse_gpx_1_1(doc)
+    new_tracks = []
     ns = "http://www.topografix.com/GPX/1/1"
 
     doc.xpath("/g:gpx/g:trk", "g" => ns).each do |trk|
@@ -125,8 +198,6 @@ class Log < ActiveRecord::Base
 
       new_tracks += tracks
     end
-
-    new_tracks.each { |track| track.save }
     new_tracks
   end
 
