@@ -1,18 +1,19 @@
-source "https://rubygems.org/"
+source 'https://rubygems.org/'
 
-gem "rails"
-gem "bcrypt"
-gem "nokogiri"
-gem "redcarpet"
-gem "unicode_utils"
+gem 'rails'
+gem 'bcrypt'
+gem 'nokogiri'
+gem 'redcarpet'
+gem 'unicode_utils'
 
-gem "jquery-rails"
-gem "less-rails"
-gem "therubyracer"
+gem 'jquery-rails'
+gem 'less-rails'
+gem 'therubyracer'
 
-gem "pg"
+gem 'pg'
+gem 'unicorn'
 
 group :development do
-  gem "better_errors"
-  gem "binding_of_caller"
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
