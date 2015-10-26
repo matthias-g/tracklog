@@ -16,7 +16,7 @@
         </thead>
         <tbody>
           <%- data[:logs].each do |log| -%>
-            <tr>
+            <tr class="<%= log.tracks.size > 1 ? 'with-tracks' : '' %>">
               <td>
                 <%= link_to log.name, log %>
                 <span class="tags">
@@ -29,6 +29,18 @@
               <td class="r"><%=format_duration log.duration %></td>
               <td class="r"><%=format_distance log.distance %></td>
             </tr>
+            <%- if log.tracks.size > 1 -%>
+              <%- log.tracks.each_with_index do |track, i| -%>
+                <tr class="track <%= i == log.tracks.size - 1 ? 'last-track' : '' %>">
+                  <td>
+                    <%= link_to track.display_name, log_track_path(log, track) %>
+                  </td>
+                  <td><%=l track.start_time, :format => "%d.%m.%Y %H:%M" %></td>
+                  <td class="r"><%=format_duration track.duration %></td>
+                  <td class="r"><%=format_distance track.distance %></td>
+                </tr>
+              <%- end -%>
+            <%- end -%>
           <%- end -%>
         </tbody>
         <tfoot>

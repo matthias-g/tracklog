@@ -143,3 +143,24 @@
     width: 466px;
   }
 }
+
+tr {
+  &.with-tracks td {
+    border: none;
+  }
+  &.track {
+    td:first-child {
+      padding-left: 30px;
+    }
+    td {
+      border: none;
+      color: #999;
+    }
+    a {
+      color: #999;
+    }
+  }
+  &.last-track td {
+    border-bottom: 1px solid #eee;
+  }
+}
