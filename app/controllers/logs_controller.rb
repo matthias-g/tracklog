@@ -19,7 +19,7 @@ class LogsController < ApplicationController
     @logs = current_user
       .visible_logs
       .select("logs.*, tracks.start_time")
-      .joins(:tracks)
+      .includes(:tracks)
       .where("tracks.start_time >= ?", Time.mktime(@selected_year, 1, 1))
       .where("tracks.start_time < ?", Time.mktime(@selected_year + 1, 1, 1))
       .order("tracks.start_time ASC")
