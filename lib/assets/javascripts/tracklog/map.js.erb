@@ -85,7 +85,7 @@ Tracklog.Map.prototype.draw = function() {
       bounds = new google.maps.LatLngBounds,
       that = this;
 
-  var showMarkers = this.tracksFetcher.tracks.size < 3;
+  var showMarkers = this.tracksFetcher.tracks.length < 3;
 
   this.tracksFetcher.tracks.forEach(function(track) {
     var line,
