@@ -85,6 +85,8 @@ Tracklog.Map.prototype.draw = function() {
       bounds = new google.maps.LatLngBounds,
       that = this;
 
+  var showMarkers = this.trackFetcher.tracks.size < 3;
+
   this.tracksFetcher.tracks.forEach(function(track) {
     var line,
         points = [],
@@ -94,17 +96,19 @@ Tracklog.Map.prototype.draw = function() {
     bounds.extend(firstSegment.start.latlng);
     points.push(firstSegment.start.latlng);
 
-    new google.maps.Marker({
-      position: firstSegment.start.latlng,
-      map: that.map,
-      icon: "<%= asset_path "start.png" %>"
-    });
+    if (showMarkers) {
+      new google.maps.Marker({
+        position: firstSegment.start.latlng,
+        map: that.map,
+        icon: "<%= asset_path "start.png" %>"
+      });
 
-    new google.maps.Marker({
-      position: lastSegment.end.latlng,
-      map: that.map,
-      icon: "<%= asset_path "end.png" %>"
-    });
+      new google.maps.Marker({
+        position: lastSegment.end.latlng,
+        map: that.map,
+        icon: "<%= asset_path "end.png" %>"
+      });
+    }
 
     line = new google.maps.Polyline({
       strokeColor: "#ff0000",
