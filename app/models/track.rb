@@ -70,7 +70,7 @@ class Track < ActiveRecord::Base
     self.descent      = 0
     self.moving_time  = 0
     self.stopped_time = 0
-    self.max_speed    = trackpoints.first.speed
+    self.max_speed    = trackpoints.first.speed || 0
 
     0.upto(self.trackpoints.size - 2) do |i|
       tp1 = self.trackpoints[i]
