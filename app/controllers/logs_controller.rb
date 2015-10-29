@@ -32,7 +32,7 @@ class LogsController < ApplicationController
   def tagged
     @logs = current_user.visible_logs
       .select("logs.*, tracks.start_time")
-      .joins(:tracks)
+      .includes(:tracks)
       .joins(:tags)
       .where("tags.name = ?", params[:tag])
       .order("tracks.start_time ASC")
