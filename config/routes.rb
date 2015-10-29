@@ -12,6 +12,8 @@ Tracklog::Application.routes.draw do
 
     get "admin" => "admin#index", as: :admin
 
+    get "tag/:tag" => "tags#show", as: :tag
+
     resources :logs do
       collection do
         get "year/:year" => :index, as: :year

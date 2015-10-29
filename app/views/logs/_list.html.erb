@@ -21,7 +21,7 @@
                 <%= link_to log.name, log %>
                 <span class="tags">
                   <%- log.tags.each do |tag| -%>
-                    <%= link_to tag.name, tagged_logs_path(tag: tag.name) %>
+                    <%= link_to tag.name, tag_path(tag: tag.name) %>
                   <%- end -%>
                 </span>
               </td>

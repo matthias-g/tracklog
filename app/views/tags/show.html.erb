@@ -1,0 +1,93 @@
+<%- title @tag.name -%>
+
+<%= javascript_include_tag "https://maps.google.com/maps/api/js?sensor=false" %>
+<%= javascript_include_tag "//www.google.com/jsapi" %>
+<%= javascript_include_tag "logs" %>
+
+<script>
+  google.load("visualization", "1", { packages: ["corechart"] });
+
+  google.setOnLoadCallback(function() {
+    new Tracklog.TracksFetcher("<%=j tag_path(@tag, :json) %>", function(tracksFetcher) {
+      new Tracklog.Map("track-map", tracksFetcher, "<%= current_user.distance_units %>");
+      new Tracklog.DistanceElevationPlot("track-distance-elevation-plot", tracksFetcher, "<%= current_user.distance_units %>");
+    });
+  });
+</script>
+
+<div id="track-header">
+  <h1><%= @tag.name %></h1>
+</div>
+
+<div id="track-side">
+  <h3>Details</h3>
+
+  <div id="track-details" class="box">
+    <dl>
+      <dt>Start</dt>
+      <dd><%= @tag.start_time ? l(@tag.start_time, :format => "%d.%m.%Y %H:%M") : "—" %></dd>
+      <dt>End</dt>
+      <dd><%= @tag.end_time ? l(@tag.end_time, :format => "%d.%m.%Y %H:%M") : "—" %></dd>
+      <dt>Duration</dt>
+      <dd><%=format_duration @tag.duration %></dd>
+      <dt>Moving</dt>
+      <dd><%=format_duration @tag.moving_time %></dd>
+      <dt>Stopped</dt>
+      <dd><%=format_duration @tag.stopped_time %></dd>
+    </dl>
+
+    <dl>
+      <dt>Distance</dt>
+      <dd><%=format_distance @tag.distance %></dd>
+      <dt>∅ Speed</dt>
+      <dd><%=format_speed @tag.overall_average_speed %></dd>
+      <dt>Mov. ∅ Speed</dt>
+      <dd><%=format_speed @tag.moving_average_speed %></dd>
+      <dt>Max. Speed</dt>
+      <dd><%=format_speed @tag.max_speed %></dd>
+    </dl>
+
+    <dl>
+      <dt>Ascent</dt>
+      <dd><%=format_elevation @tag.ascent %></dd>
+      <dt>Descent</dt>
+      <dd><%=format_elevation @tag.descent %></dd>
+      <dt>Min. Elevation</dt>
+      <dd><%=format_elevation @tag.min_elevation %></dd>
+      <dt>Max. Elevation</dt>
+      <dd><%=format_elevation @tag.max_elevation %></dd>
+    </dl>
+
+    <dl>
+      <dt>Logs</dt>
+      <dd><%= @tag.logs.count %></dd>
+      <dt>Tracks</dt>
+      <dd><%= @tag.logs.map { |l| l.tracks.count }.sum %></dd>
+      <dt>Trackpoints</dt>
+      <dd><%= @tag.logs.map { |l| l.tracks.map{ |t| t.trackpoints.count }.sum }.sum %></dd>
+    </dl>
+  </div>
+
+  <h3>Logs</h3>
+
+  <div id="tag-logs" class="box">
+    <ul>
+      <%- @tag.logs[0..2].each do |log| -%>
+        <li><%= link_to log.name, log_path(log) %><br>
+          <%=l log.start_time, :format => "%d.%m.%Y %H:%M" %>,
+          <%=format_distance log.distance %>
+        </li>
+      <%- end -%>
+    </ul>
+    <%= link_to 'Show full list', tagged_logs_path(tag: @tag.name) %>
+  </div>
+
+</div>
+
+<div id="track-main">
+  <div id="track-map"></div>
+
+  <h2>Elevation Profile</h2>
+  <div id="track-distance-elevation-plot"></div>
+</div>
+

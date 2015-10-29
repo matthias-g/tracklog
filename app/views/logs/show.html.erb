@@ -88,7 +88,7 @@
     <div id="log-tags" class="box">
       <ul>
         <%- @log.tags.each do |tag| -%>
-          <li><%= link_to tag.name, tagged_logs_path(tag) %>
+          <li><%= link_to tag.name, tag_path(tag) %>
         <%- end -%>
       </ul>
     </div>
