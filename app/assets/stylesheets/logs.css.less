@@ -164,3 +164,30 @@ tr {
     border-bottom: 1px solid #eee;
   }
 }
+
+.btn-full-screen div {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 9;
+  -moz-user-select: none;
+  box-shadow: 0px 1px 4px -1px rgba(0, 0, 0, 0.3);
+  border-radius: 2px; cursor: pointer;
+  background-color: rgb(255, 255, 255);
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  span {
+    overflow: hidden;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 6px;
+    top: 4px;
+    i {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+}
