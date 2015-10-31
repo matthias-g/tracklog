@@ -10,6 +10,7 @@ gem 'jquery-rails'
 gem 'less-rails'
 gem 'therubyracer'
 gem 'uglifier'
+gem 'font-awesome-rails'
 
 gem 'pg'
 gem 'unicorn'
