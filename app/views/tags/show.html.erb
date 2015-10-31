@@ -61,11 +61,11 @@
 
     <dl>
       <dt>Logs</dt>
-      <dd><%= @tag.logs.count %></dd>
+      <dd><%= @logs.count %></dd>
       <dt>Tracks</dt>
-      <dd><%= @tag.logs.map { |l| l.tracks.count }.sum %></dd>
+      <dd><%= @logs.map { |l| l.tracks.count }.sum %></dd>
       <dt>Trackpoints</dt>
-      <dd><%= @tag.logs.map { |l| l.tracks.map{ |t| t.trackpoints.count }.sum }.sum %></dd>
+      <dd><%= @logs.map { |l| l.tracks.map{ |t| t.trackpoints.count }.sum }.sum %></dd>
     </dl>
   </div>
 
@@ -73,7 +73,7 @@
 
   <div id="tag-logs" class="box">
     <ul>
-      <%- @tag.logs[0..2].each do |log| -%>
+      <%- @logs[0..2].each do |log| -%>
         <li><%= link_to log.name, log_path(log) %><br>
           <%=l log.start_time, :format => "%d.%m.%Y %H:%M" %>,
           <%=format_distance log.distance %>
