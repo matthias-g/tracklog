@@ -39,7 +39,7 @@ class TagsController < ApplicationController
       end
 
       format.gpx do
-        filename = "log-#{@log.id}-#{@log.name.parameterize}.gpx"
+        filename = "logs-tagged-#{@tag.name.parameterize}.gpx"
         headers["Content-Disposition"] = %{Content-Disposition: attachment; filename="#{filename}"}
       end
     end

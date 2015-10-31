@@ -17,6 +17,10 @@
 </script>
 
 <div id="track-header">
+  <ul>
+    <li><%= link_to "Export", tag_path(@tag, :format => :gpx), :class => "button" %>
+  </ul>
+
   <h1><%= @tag.name %></h1>
 </div>
 
@@ -61,7 +65,7 @@
 
     <dl>
       <dt>Logs</dt>
-      <dd><%= @logs.count %></dd>
+      <dd><%= @logs.to_a.count %></dd>
       <dt>Tracks</dt>
       <dd><%= @logs.map { |l| l.tracks.count }.sum %></dd>
       <dt>Trackpoints</dt>
