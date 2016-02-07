@@ -10,9 +10,8 @@ class LogsController < ApplicationController
     @selected_year = params[:year] ? params[:year].to_i : Time.now.year
 
     @available_years = current_user
-      .visible_logs
+      .visible_tracks
       .select("tracks.start_time")
-      .includes(:tracks)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    .includes(:tracks)
       .order("tracks.start_time ASC")
       .map { |track| track.start_time.year }
       .uniq
@@ -138,7 +137,7 @@ class LogsController < ApplicationController
   def find_log_and_check_read_permission
     @log = Log.find(params[:id])
 
-    unless @log.user_id == current_user.id || @log.shared
+    unless @log.in? current_user.visible_logs
       flash[:error] = "You don’t have permission to view this log."
       redirect_to dashboard_path and return
     end

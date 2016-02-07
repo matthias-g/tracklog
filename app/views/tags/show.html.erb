@@ -3,6 +3,7 @@
 <%= javascript_include_tag "https://maps.google.com/maps/api/js?sensor=false" %>
 <%= javascript_include_tag "//www.google.com/jsapi" %>
 <%= javascript_include_tag "logs" %>
+<%= javascript_include_tag "tags" %>
 
 <script>
   google.load("visualization", "1", { packages: ["corechart"] });
@@ -87,6 +88,26 @@
     <%= link_to 'Show full list', tagged_logs_path(tag: @tag.name) %>
   </div>
 
+  <% if @tag.viewers.count > 0 || current_user.is_admin? %>
+    <h3>Visible for</h3>
+
+    <div id="tag-viewers" class="box">
+      <ul>
+        <%- @tag.viewers.each do |viewer| -%>
+          <li>
+            <%= viewer.name %>
+            <% if current_user.is_admin? %>
+              <%= link_to '(x)', delete_tag_viewer_path(tag: @tag.name, viewer: viewer.username), method: :delete %>
+            <% end %>
+          </li>
+        <%- end -%>
+      </ul>
+      <% if current_user.is_admin? %>
+        <%= link_to 'Add viewer', nil, id: 'add-viewers-link' %>
+      <% end %>
+    </div>
+  <% end %>
+
 </div>
 
 <div id="track-main">
@@ -108,3 +129,18 @@
   <div id="track-distance-elevation-plot"></div>
 </div>
 
+<div id="add-viewers-pane" class="site-overlay">
+  <div class="box">
+    <div class="close">×</div>
+    <h2>Viewers</h2>
+    <div class="content">
+      <ul>
+        <%- User.all.each do |user| -%>
+          <% unless @tag.viewers.include?(user) || user.id == current_user.id%>
+            <li><%= link_to user.name || user.username, add_tag_viewer_path(tag: @tag.name, viewer: user.username), method: :put %></li>
+          <%- end %>
+        <%- end -%>
+      </ul>
+    </div>
+  </div>
+</div>

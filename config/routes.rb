@@ -13,6 +13,8 @@ Tracklog::Application.routes.draw do
     get "admin" => "admin#index", as: :admin
 
     get "tag/:tag" => "tags#show", as: :tag
+    put "tag/:tag/add_viewer" => "tags#add_viewer", as: :add_tag_viewer
+    delete "tag/:tag/delete_viewer" => "tags#delete_viewer", as: :delete_tag_viewer
 
     resources :logs do
       collection do

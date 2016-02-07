@@ -1,5 +1,7 @@
 class Tag < ActiveRecord::Base
   has_and_belongs_to_many :logs
+  has_and_belongs_to_many :viewers, class_name: 'User'
+
   validates :name, presence: true, uniqueness: true
   before_save :normalize
 

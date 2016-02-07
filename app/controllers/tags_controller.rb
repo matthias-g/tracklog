@@ -2,13 +2,14 @@
 
 class TagsController < ApplicationController
   before_filter :authenticate
+  before_filter :redirect_non_admins, only: [:add_viewer, :delete_viewer]
 
   def show
     @tag = Tag.find_by_name(params[:tag])
     @logs = current_user.visible_logs
       .select("logs.*, tracks.start_time")
       .includes(:tracks)
-      .joins(:tags)
+      .joins('inner join tags on tags.id = logs_tags.tag_id')
       .where("tags.name = ?", @tag.name)
       .order("tracks.start_time ASC")
       .all
@@ -43,6 +44,28 @@ class TagsController < ApplicationController
         headers["Content-Disposition"] = %{Content-Disposition: attachment; filename="#{filename}"}
       end
     end
+  end
+
+  def add_viewer
+    tag = Tag.find_by_name(params[:tag])
+    viewer = User.find_by_username(params[:viewer])
+    tag.viewers << viewer
+
+    redirect_to tag_url(tag)
+  end
+
+  def delete_viewer
+    tag = Tag.find_by_name(params[:tag])
+    viewer = User.find_by_username(params[:viewer])
+    tag.viewers.destroy(viewer)
+
+    redirect_to tag_url(tag)
+  end
+
+  private
+
+  def redirect_non_admins
+    redirect_to dashboard_path unless current_user.is_admin?
   end
 
 end
