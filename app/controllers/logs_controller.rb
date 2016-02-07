@@ -10,8 +10,9 @@ class LogsController < ApplicationController
     @selected_year = params[:year] ? params[:year].to_i : Time.now.year
 
     @available_years = current_user
-      .tracks
+      .visible_logs
       .select("tracks.start_time")
+      .includes(:tracks)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    .includes(:tracks)
       .order("tracks.start_time ASC")
       .map { |track| track.start_time.year }
       .uniq
