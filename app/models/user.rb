@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
     Log.joins('left join logs_tags on logs_tags.log_id = logs.id')
         .joins('left join tags_users on tags_users.tag_id = logs_tags.tag_id')
         .joins('left join users on tags_users.user_id = users.id')
-        .where("logs.user_id = ? or users.id = ? or shared = 'T'", id, id)
+        .where('logs.user_id = ? or users.id = ?', id, id)
   end
 
   def visible_tracks
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
         .joins('left join logs_tags on logs_tags.log_id = logs.id')
         .joins('left join tags_users on tags_users.tag_id = logs_tags.tag_id')
         .joins('left join users on tags_users.user_id = users.id')
-        .where("logs.user_id = ? or logs.shared = 'T' or users.id = ?", id, id)
+        .where('logs.user_id = ? or users.id = ?', id, id)
   end
 
   def display_name
