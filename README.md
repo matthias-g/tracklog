@@ -1,6 +1,8 @@
 Tracklog
 =======
 
+[![Dependency Status](https://gemnasium.com/matthias-g/tracklog.svg)](https://gemnasium.com/matthias-g/tracklog)
+
 **Tracklog** is a Ruby on Rails application for managing GPS track logs. It’s
 based on Rails Edge and thus requires Ruby 1.9.
 
