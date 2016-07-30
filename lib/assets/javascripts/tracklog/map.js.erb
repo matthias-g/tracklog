@@ -74,6 +74,18 @@ Tracklog.Map.prototype.setupMapAndPopup = function(container) {
     }
   });
 
+//  var styles = [
+//    {
+//      featureType: "all",
+//      elementType: "labels",
+//      stylers: [
+//        { visibility: "off" }
+//      ]
+//    }
+//  ];
+//
+//  this.map.setOptions({styles: styles});
+
   this.popup = new Tracklog.MapPopupOverlay({
     map: this.map,
     distanceUnits: this.distanceUnits
@@ -112,7 +124,7 @@ Tracklog.Map.prototype.draw = function() {
 
     line = new google.maps.Polyline({
       strokeColor: "#ff0000",
-      strokeOpacity: 0.6,
+      strokeOpacity: 1,
       strokeWidth: 4,
       map: that.map
     });
