@@ -1,6 +1,6 @@
 require "tracklog/haversine"
 
-class Trackpoint < ActiveRecord::Base
+class Trackpoint < ApplicationRecord
   belongs_to :track
 
   validates :latitude,  presence: true, numericality: true

@@ -1,4 +1,4 @@
-Tracklog::Application.routes.draw do
+Rails.application.routes.draw do
   scope 'tracklog' do
     root to: "dashboard#index", as: :dashboard
 

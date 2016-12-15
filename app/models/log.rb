@@ -1,4 +1,4 @@
-class Log < ActiveRecord::Base
+class Log < ApplicationRecord
   belongs_to :user
 
   has_many :tracks, -> { order(:start_time) }, dependent: :destroy

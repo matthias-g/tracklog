@@ -1,4 +1,4 @@
-class Tag < ActiveRecord::Base
+class Tag < ApplicationRecord
   has_and_belongs_to_many :logs
   has_and_belongs_to_many :viewers, class_name: 'User'
 

@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Tracklog::Application.config.secret_key_base = 'db14d14f0d0b79b99175056c304ec955ab0091f30379657870d21279ff8d36912f6ea8d9776a8ca7846d961ea0b796d2d40a52944632e3560a6316dd070d82cb'
+Rails.application.config.secret_key_base = 'db14d14f0d0b79b99175056c304ec955ab0091f30379657870d21279ff8d36912f6ea8d9776a8ca7846d961ea0b796d2d40a52944632e3560a6316dd070d82cb'

@@ -1,4 +1,4 @@
-class Track < ActiveRecord::Base
+class Track < ApplicationRecord
   require 'net/http'
   require 'open-uri'
   require 'json'
