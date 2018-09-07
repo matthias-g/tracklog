@@ -9,9 +9,8 @@
 
   google.setOnLoadCallback(function() {
     new Tracklog.TracksFetcher("<%=j log_path(@log, :json) %>", function(tracksFetcher) {
-      var tracklog = new Tracklog.Map("track-map", tracksFetcher, "<%= current_user.distance_units %>");
+      new Tracklog.Map("track-map", tracksFetcher, "<%= current_user.distance_units %>");
       new Tracklog.DistanceElevationPlot("track-distance-elevation-plot", tracksFetcher, "<%= current_user.distance_units %>");
-      initFullScreenButtons(tracklog.map);
     });
   });
 </script>
@@ -127,19 +126,7 @@
 </div>
 
 <div id="track-main">
-  <div id="map-container" style="position: relative;">
-    <div class="btn-full-screen" style="display: none">
-      <div>
-        <span id="btn-enter-full-screen">
-          <i class="fa fa-expand"></i>
-        </span>
-        <span id="btn-exit-full-screen" style="display: none">
-          <i class="fa fa-compress"></i>
-        </span>
-      </div>
-    </div>
-    <div id="track-map"></div>
-  </div>
+  <div id="track-map"></div>
 
   <%- if @log.comment and not @log.comment.empty? -%>
     <h2>Description</h2>

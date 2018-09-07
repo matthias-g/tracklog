@@ -3,7 +3,6 @@
 //= require tracklog/distance_elevation_plot
 //= require tracklog/haversine
 //= require tracklog/map
-//= require map-fullscreen
 
 $(function() {
   $("#log-tags-pane .close").click(function() {
