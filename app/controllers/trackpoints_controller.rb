@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class TrackpointsController < ApplicationController
-  before_filter :authenticate
+  before_action :authenticate
 
   def index
     if params[:track_id]

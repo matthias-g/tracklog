@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 class TagsController < ApplicationController
-  before_filter :authenticate
-  before_filter :redirect_non_admins, only: [:add_viewer, :delete_viewer]
+  before_action :authenticate
+  before_action :redirect_non_admins, only: [:add_viewer, :delete_viewer]
 
   def show
     @tag = Tag.find_by_name(params[:tag])

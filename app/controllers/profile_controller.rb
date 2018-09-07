@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 class ProfileController < ApplicationController
-  before_filter :authenticate
-  before_filter :redirect_restricted_users
+  before_action :authenticate
+  before_action :redirect_restricted_users
 
   def index
     @user = current_user

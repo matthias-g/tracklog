@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 class TracksController < ApplicationController
-  before_filter :authenticate
-  before_filter :find_track_and_check_read_permission, only: [:show]
-  before_filter :find_track_and_check_write_permission, only: [:update, :split, :transfer, :destroy]
+  before_action :authenticate
+  before_action :find_track_and_check_read_permission, only: [:show]
+  before_action :find_track_and_check_write_permission, only: [:update, :split, :transfer, :destroy]
 
   def show
     @trackpoints = @track.trackpoints

@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  before_filter :authenticate, :except => [:login]
+  before_action :authenticate, :except => [:login]
   layout false, :only => [:login]
 
   def login

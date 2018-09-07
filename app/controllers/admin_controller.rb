@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
-  before_filter :authenticate
-  before_filter :check_admin_permissions
+  before_action :authenticate
+  before_action :check_admin_permissions
 
   def index
     @users = User.all

@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-  before_filter :authenticate
+  before_action :authenticate
 
   def index
     @total_distance   = current_user.visible_tracks.total_distance

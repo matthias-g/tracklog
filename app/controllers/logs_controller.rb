@@ -1,10 +1,10 @@
 # encoding: utf-8
 
 class LogsController < ApplicationController
-  before_filter :authenticate
-  before_filter :find_log_and_check_read_permission, only: [:show, :tracks]
-  before_filter :find_log_and_check_write_permission, only: [:edit, :update, :destroy]
-  before_filter :redirect_restricted_users, only: [:new, :create]
+  before_action :authenticate
+  before_action :find_log_and_check_read_permission, only: [:show, :tracks]
+  before_action :find_log_and_check_write_permission, only: [:edit, :update, :destroy]
+  before_action :redirect_restricted_users, only: [:new, :create]
 
   def index
     @selected_year = params[:year] ? params[:year].to_i : Time.now.year
