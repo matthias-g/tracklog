@@ -4,3 +4,6 @@ log/*.log
 tmp/**/*
 .ruby-version
 .idea
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
