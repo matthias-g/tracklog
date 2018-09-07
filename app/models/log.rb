@@ -85,7 +85,7 @@ class Log < ApplicationRecord
       new_tracks = parse_gpx_1_1(doc)
     end
 
-    new_tracks.each { |track| track.save }
+    new_tracks.each { |track| track.save! }
     new_tracks
   end
 
@@ -100,6 +100,7 @@ class Log < ApplicationRecord
       track_name = (nodes.size == 1) ? nodes.first.text : nil
 
       track = self.tracks.new
+      track.save!
 
       rtept_nodes = rte.xpath("./g:rtept", "g" => ns)
       rtept_nodes.each do |rtept|
@@ -115,13 +116,12 @@ class Log < ApplicationRecord
         nodes = rtept.xpath("./g:speed", "g" => ns)
         speed = (nodes.size == 1) ? nodes.first.text.to_f.kilometer_per_hour : nil
 
-        if time and rtept["lat"] and rtept["lon"]
-          track.trackpoints.new \
-            :latitude  => rtept["lat"],
-            :longitude => rtept["lon"],
-            :elevation => elevation,
-            :time      => time,
-            :speed     => speed
+        if time && rtept["lat"] && rtept["lon"]
+          track.trackpoints.new(latitude:   rtept["lat"],
+                                longitude:  rtept["lon"],
+                                elevation:  elevation,
+                                time:       time,
+                                speed:      speed)
         end
 
       end
