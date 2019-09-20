@@ -83,6 +83,8 @@ class Log < ApplicationRecord
       new_tracks = parse_gpx_1_0(doc)
     elsif version == "1.1"
       new_tracks = parse_gpx_1_1(doc)
+    elsif version == nil
+      new_tracks = parse_gpx_nil(doc)
     end
 
     new_tracks.each { |track| track.save! }
@@ -194,6 +196,57 @@ class Log < ApplicationRecord
             track.name = "#{track_name} ##{i + 1}"
           end
         end
+      end
+
+      new_tracks += tracks
+    end
+    new_tracks
+  end
+
+  # tracks.select{ |t| t.start_time == nil }.each{ |t| t.destroy }
+  def parse_gpx_nil(doc)
+    new_tracks = []
+    ns = "http://www.topografix.com/GPX/1/1"
+
+    doc.xpath("/g:gpx/g:trk", "g" => ns).each do |trk|
+      tracks = []
+
+      # Track name
+      nodes = trk.xpath("./g:name", "g" => ns)
+      track_name = (nodes.size == 1) ? nodes.first.text : nil
+
+      # Track Segments
+      trkseg_nodes = trk.xpath("./g:trkseg", "g" => ns)
+      trkseg_nodes.each_with_index do |trkseg, i|
+        track = self.tracks.new
+        track.save!
+
+        trkseg.xpath("./g:trkpt", "g" => ns).each do |trkpt|
+          # Elevation
+          nodes = trkpt.xpath("./g:ele", "g" => ns)
+          elevation = (nodes.size == 1) ? nodes.first.text.to_f : nil
+
+          # Time
+          nodes = trkpt.xpath("./g:time", "g" => ns)
+          time = (nodes.size == 1) ? Time.parse(nodes.first.text) + 8.hours : nil
+          if time < 15.years.ago
+            time += 19.years + 7.months + 16.days
+          end
+
+          if time and trkpt["lat"] and trkpt["lon"]
+            track.trackpoints.new \
+              :latitude  => trkpt["lat"],
+              :longitude => trkpt["lon"],
+              :elevation => elevation,
+              :time      => time
+          end
+        end
+
+        if track.trackpoints.size > 2
+          track.update_cached_information
+          tracks << track
+        end
+        track.name = track_name
       end
 
       new_tracks += tracks
