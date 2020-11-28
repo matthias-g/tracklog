@@ -1,7 +1,7 @@
 source 'https://rubygems.org/'
 
 gem 'rails', '~> 5.2.0'
-gem 'bootsnap', '~> 1.3.1'
+gem 'bootsnap', '~> 1.3'
 gem 'bcrypt', '~> 3.1.12'
 gem 'nokogiri', '~> 1.8.4'
 gem 'redcarpet', '~> 3.4.0'
